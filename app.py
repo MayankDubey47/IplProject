@@ -88,13 +88,13 @@ def load_player_details(player):
     # ball_faced = df_without_noball_and_wides.groupby('batter')['extra_type'].count()[player]
     # strikerate = round((total_runs / ball_faced) * 100, 2)
 
-    if df['batter'].isin([player]).sum() >= 1:
+    if df[df['batsman_run'] == 6]['batter'].isin([player]).sum() >= 1:
         df_6 = df[df['batsman_run'] == 6]
         total_six = df_6.groupby('batter')['batsman_run'].count()[player]
     else:
         total_six=0
 
-    if df['batter'].isin([player]).sum() >= 1:
+    if df[df['batsman_run'] == 6]['batter'].isin([player]).sum() >= 1:
         df_4 = df[df['batsman_run'] == 4]
         total_four = df_4.groupby('batter')['batsman_run'].count()[player]
     else:
