@@ -1,11 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib
-matplotlib.use('TkAgg')
-
-import matplotlib.pyplot as plt
-
-
 
 df1=pd.read_csv('IPL_Ball_by_Ball_2008_2022.csv')
 df2=pd.read_csv('IPL_Matches_2008_2022.csv')
@@ -285,34 +279,34 @@ def load_team_details(team):
     sp = pd.concat([ba, pq], ignore_index=True)
     sp['winner1'] = sp.apply(lambda i: team if i['WinningTeam'] == team else 'others',
                              axis=1)
-    col7, col8 = st.columns(2)
+    # col7, col8 = st.columns(2)
+    #
+    # with col7:
+    #
+    #     st.subheader('Winning percentage while defending')
+    #     fig, ax = plt.subplots()
+    #     ax.pie(
+    #         xyz['winner1'].value_counts(),
+    #         autopct="%1.1f%%",
+    #         explode=(0, 0.1),
+    #         labels=xyz['winner1'].value_counts().index,
+    #         colors=['purple', 'lightcoral']
+    #     )
+    #     ax.axis('equal')
+    #     st.pyplot(fig)
 
-    with col7:
-
-        st.subheader('Winning percentage while defending')
-        fig, ax = plt.subplots()
-        ax.pie(
-            xyz['winner1'].value_counts(),
-            autopct="%1.1f%%",
-            explode=(0, 0.1),
-            labels=xyz['winner1'].value_counts().index,
-            colors=['purple', 'lightcoral']
-        )
-        ax.axis('equal')
-        st.pyplot(fig)
-
-    with col8:
-        st.subheader('Winning percentage while chasing')
-        fig, ax = plt.subplots()
-        ax.pie(
-            sp['winner1'].value_counts(),
-            autopct="%1.1f%%",
-            explode=(0, 0.1),
-            labels=sp['winner1'].value_counts().index,
-            colors=['purple', 'lightcoral']
-        )
-        ax.axis('equal')
-        st.pyplot(fig)
+    # with col8:
+    #     st.subheader('Winning percentage while chasing')
+    #     fig, ax = plt.subplots()
+    #     ax.pie(
+    #         sp['winner1'].value_counts(),
+    #         autopct="%1.1f%%",
+    #         explode=(0, 0.1),
+    #         labels=sp['winner1'].value_counts().index,
+    #         colors=['purple', 'lightcoral']
+    #     )
+    #     ax.axis('equal')
+    #     st.pyplot(fig)
 
     col1,col2=st.columns(2)
     with col1:
@@ -344,32 +338,32 @@ def load_team_details(team):
     df4['winner'] = df4.apply(
         lambda i: team if i['WinningTeam'] == team else 'Other',
         axis=1)
-    col5,col6 = st.columns(2)
-    with col5:
-        st.subheader('Winning percentage while winning the toss')
-        fig, ax = plt.subplots()
-        ax.pie(
-            df3['winner'].value_counts(),
-            autopct="%1.1f%%",
-            explode=(0, 0.1),
-            labels=df3['winner'].value_counts().index,
-            colors=['purple', 'lightcoral']
-        )
-        ax.axis('equal')
-        st.pyplot(fig)
+    #col5,col6 = st.columns(2)
+    #with col5:
+        #st.subheader('Winning percentage while winning the toss')
+        #fig, ax = plt.subplots()
+        #ax.pie(
+            #df3['winner'].value_counts(),
+            #autopct="%1.1f%%",
+            #explode=(0, 0.1),
+            #labels=df3['winner'].value_counts().index,
+            #colors=['purple', 'lightcoral']
+        #)
+        #ax.axis('equal')
+        #st.pyplot(fig)
 
-    with col6:
-        st.subheader('Winning percentage while losing the toss')
-        fig, ax = plt.subplots()
-        ax.pie(
-            df4['winner'].value_counts(),
-            autopct="%1.1f%%",
-            explode=(0, 0.1),
-            labels=df4['winner'].value_counts().index,
-            colors=['purple', 'lightcoral']
-        )
-        ax.axis('equal')
-        st.pyplot(fig)
+    #with col6:
+        #st.subheader('Winning percentage while losing the toss')
+        #fig, ax = plt.subplots()
+        #ax.pie(
+            #df4['winner'].value_counts(),
+            #autopct="%1.1f%%",
+            #explode=(0, 0.1),
+            #labels=df4['winner'].value_counts().index,
+            #colors=['purple', 'lightcoral']
+        #)
+        #ax.axis('equal')
+        #st.pyplot(fig)
 
 
 
