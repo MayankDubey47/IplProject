@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 df1=pd.read_csv('IPL_Ball_by_Ball_2008_2022.csv')
 df2=pd.read_csv('IPL_Matches_2008_2022.csv')
@@ -83,10 +83,7 @@ def load_player_details(player):
         strikerate = round((total_runs / ball_faced) * 100, 2)
     else:
         strikerate = 0
-    # df_without_noball = df[df['extra_type'] != 'noballs']
-    # df_without_noball_and_wides = df_without_noball[df_without_noball['extra_type'] != 'wides']
-    # ball_faced = df_without_noball_and_wides.groupby('batter')['extra_type'].count()[player]
-    # strikerate = round((total_runs / ball_faced) * 100, 2)
+
 
     if df[df['batsman_run'] == 6]['batter'].isin([player]).sum() >= 1:
         df_6 = df[df['batsman_run'] == 6]
@@ -147,7 +144,6 @@ def load_overall_analysis():
     st.subheader('Top 5 highest wins while defending',divider='violet')
     st.dataframe(top_5_df,column_config={'losing_team':'LosingTeam'})
 
-    #defend_overall = df2[df2['WonBy'] == 'Runs'].sort_values('Margin', ascending=False,ignore_index=True).head()[['Date','WinningTeam','losing_team', 'Margin']]
     chase_overall = df2[df2['WonBy'] == 'Wickets'].sort_values('Margin', ascending=False,ignore_index=True).head()[['Date','WinningTeam','losing_team', 'Margin']]
     st.subheader('Top 5 highest wins while chasing',divider='violet')
     st.dataframe(chase_overall,column_config={'losing_team':'LosingTeam'})
@@ -267,6 +263,52 @@ def load_team_details(team):
     st.subheader('Top 5 wins while chasing',divider='violet')
     st.dataframe(chase_winsdf,column_config={'losing_team':'LosingTeam'})
 
+    a = df2[df2['TossWinner'] == team]
+    xy = a[a['TossDecision'] == 'bat']
+    abcd = df2[df2['Team1'].isin([team]) | df2['Team2'].isin([team])]
+    b = abcd[abcd['TossWinner'] != team]
+    yz = b[b['TossDecision'] == 'field']
+    xyz = pd.concat([xy, yz], ignore_index=True)
+    xyz['winner1'] = xyz.apply(lambda i: team if i['WinningTeam'] == team else 'others',
+                               axis=1)
+
+    cd = df2[df2['TossWinner'] == team]
+    ba = cd[cd['TossDecision'] == 'bowl']
+    efgh = df2[df2['Team1'].isin([team]) | df2['Team2'].isin([team])]
+    mn = efgh[efgh['TossWinner'] != team]
+    pq = mn[mn['TossDecision'] == 'bat']
+    sp = pd.concat([ba, pq], ignore_index=True)
+    sp['winner1'] = sp.apply(lambda i: team if i['WinningTeam'] == team else 'others',
+                             axis=1)
+    col7, col8 = st.columns(2)
+
+    with col7:
+
+        st.subheader('Winning percentage while defending')
+        fig, ax = plt.subplots()
+        ax.pie(
+            xyz['winner1'].value_counts(),
+            autopct="%1.1f%%",
+            explode=(0, 0.1),
+            labels=xyz['winner1'].value_counts().index,
+            colors=['purple', 'lightcoral']
+        )
+        ax.axis('equal')
+        st.pyplot(fig)
+
+    with col8:
+        st.subheader('Winning percentage while chasing')
+        fig, ax = plt.subplots()
+        ax.pie(
+            sp['winner1'].value_counts(),
+            autopct="%1.1f%%",
+            explode=(0, 0.1),
+            labels=sp['winner1'].value_counts().index,
+            colors=['purple', 'lightcoral']
+        )
+        ax.axis('equal')
+        st.pyplot(fig)
+
     col1,col2=st.columns(2)
     with col1:
 
@@ -287,6 +329,45 @@ def load_team_details(team):
     mvp_team = df2[df2['WinningTeam'] == team]['Player_of_Match'].value_counts().head()
     st.subheader('Top 5 player who won most number of man of the match awards',divider='violet')
     st.dataframe(mvp_team,column_config={'Player_of_Match':'Player'})
+
+    df3 = df2[df2['TossWinner'] == team]
+    df3['winner'] = df3.apply(lambda i: team if i['WinningTeam'] == team else 'Other',
+                          axis=1)
+    abc = df2[
+        df2['Team1'].isin([team]) | df2['Team2'].isin([team])]
+    df4 = abc[abc['TossWinner'] != team]
+    df4['winner'] = df4.apply(
+        lambda i: team if i['WinningTeam'] == team else 'Other',
+        axis=1)
+    col5,col6 = st.columns(2)
+    with col5:
+        st.subheader('Winning percentage while winning the toss')
+        fig, ax = plt.subplots()
+        ax.pie(
+            df3['winner'].value_counts(),
+            autopct="%1.1f%%",
+            explode=(0, 0.1),
+            labels=df3['winner'].value_counts().index,
+            colors=['purple', 'lightcoral']
+        )
+        ax.axis('equal')
+        st.pyplot(fig)
+
+    with col6:
+        st.subheader('Winning percentage while losing the toss')
+        fig, ax = plt.subplots()
+        ax.pie(
+            df4['winner'].value_counts(),
+            autopct="%1.1f%%",
+            explode=(0, 0.1),
+            labels=df4['winner'].value_counts().index,
+            colors=['purple', 'lightcoral']
+        )
+        ax.axis('equal')
+        st.pyplot(fig)
+
+
+
 
 
 
