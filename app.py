@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+
 
 df1=pd.read_csv('IPL_Ball_by_Ball_2008_2022.csv')
 df2=pd.read_csv('IPL_Matches_2008_2022.csv')
