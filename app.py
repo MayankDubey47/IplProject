@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-import matplotlib
-matplotlib.use('TkAgg')
+import subprocess
+command = ['echo', 'backend: TkAgg', '>>', '~/.matplotlib/matplotlibrc']
+subprocess.run(command, shell=True)
+
 import matplotlib.pyplot as plt
 
 
